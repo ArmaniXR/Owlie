@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<head>
+    <!-- Tested/Assembled by Armani Cassel, NWS SHV, 1/7/2023 -->
+  <meta charset="utf-8">
+  <title>Owlie Skywarn in 3D</title>
+  <meta name="description" content="Chat with Owlie Skywarn in 3D">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  
+  <link rel="stylesheet" href="examples.css">
+  
+  <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+  <script src="info-message.js"></script>
+  <script src="https://unpkg.com/aframe-extras@3.3.0/dist/aframe-extras.min.js"></script>
+  <script src="hide-on-enter-ar.js"></script>
+  <script src="ar-shadows.js"></script>
+  <script src="ar-hit-test.js"></script>
+  <script src="model-viewer.js"></script>
+  <script src="background-gradient.js"></script>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <!-- Include jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+
+  
+  
+</head>
+<body>
+  <!--
+<iframe id="exampleIframe" class="example__iframe" width="100%" height="100%" allowfullscreen="yes" scrolling="no" allowvr="yes" src="https://owlie2.glitch.me"></iframe>
+-->
+  <style>
+
+    
+  </style>
+  
+<div class="content--body">
+  
+  <style>
+      .speech-bubble {
+  background-color: white;
+  border: 1px solid #cccccc;
+  border-radius: 10px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  font-family: sans-serif;
+  font-size: 14px;
+  overflow: auto;
+  padding: 10px;
+  width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  position: fixed;
+  z-index: 2;
+}
+
+.speech-bubble:after {
+  border: 10px solid transparent;
+  border-bottom: 10px solid white;
+  content: "";
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+    top: 0;
+  position: fixed;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+  </style>
+  
+  <!-- Add a div element to display the forecast -->
+<div id="forecast-textbox" class="speech-bubble"></div>
+
+  <!--  <div class="demo">
+      <model-viewer src="https://cdn.glitch.global/7a52a210-a1f4-4a91-841c-9725482ac9de/Owlie_AR4.glb?v=1672831647785"
+              ios-src="https://cdn.glitch.global/7a52a210-a1f4-4a91-841c-9725482ac9de/Owlie_RD2.usdz?v=1672949631933"
+              alt="Owlie Skywarn"
+              ar
+              autoplay
+              camera-controls
+              touch-action="pan-y"></model-viewer>
+  </div>
+-->
+  
+  
+
+<div id="demo" class="demo" style="display:none;">      
+  <model-viewer src="https://cdn.glitch.global/7a52a210-a1f4-4a91-841c-9725482ac9de/Owlie_AR4.glb?v=1672831647785"
+              ios-src="https://cdn.glitch.global/7a52a210-a1f4-4a91-841c-9725482ac9de/Owlie_RD2.usdz?v=1672949631933"
+              alt="Owlie Skywarn"
+              ar
+              autoplay
+              camera-controls
+              touch-action="pan-y"></model-viewer>
+  </div>
+  
+<div id="demo2" class="demo" style="display:none;">
+        <model-viewer src="https://cdn.glitch.global/5a2e8612-38b7-4198-81e4-331490f755b9/Owlie_FloodVignette1.glb?v=1673160108326"
+              ios-src="https://cdn.glitch.global/5a2e8612-38b7-4198-81e4-331490f755b9/Owlie_FloodVignette1.usdz?v=1673160122263"
+              alt="Owlie Skywarn"
+              ar
+              autoplay
+              camera-controls
+              touch-action="pan-y"></model-viewer></div>
+  
+<div id="demo3" class="demo" style="display:none;">
+          <model-viewer src="https://cdn.glitch.me/5a2e8612-38b7-4198-81e4-331490f755b9/TakeShelterScene2.glb?v=1673426528831"
+              alt="Owlie Skywarn"
+              ar
+              autoplay
+              camera-controls
+              touch-action="pan-y"></model-viewer></div>
+
+<script>
+  
+  window.onload = function() {
+  demoswitch();
+};
+
+  
+//switch out Owlie scenes  
+var currentDiv = 1;
+function demoswitch() { 
+  if (currentDiv === 1) {
+    document.getElementById('demo').style.display = 'block';  
+    document.getElementById('demo2').style.display = 'none';
+    document.getElementById('demo3').style.display = 'none';
+    currentDiv = 2;
+  } else if (currentDiv === 2) {
+    document.getElementById('demo').style.display = 'none';    
+    document.getElementById('demo2').style.display = 'block';
+    document.getElementById('demo3').style.display = 'none';
+    currentDiv = 3;
+  } else if (currentDiv === 3) {
+    document.getElementById('demo').style.display = 'none';    
+    document.getElementById('demo2').style.display = 'none';
+    document.getElementById('demo3').style.display = 'block';
+    currentDiv = 4;
+  } else {
+        document.getElementById('demo').style.display = 'block'; 
+        document.getElementById('demo2').style.display = 'none';
+        document.getElementById('demo3').style.display = 'none';
+        currentDiv = 1;
+  }
+  
+}
+
+
+</script>
+
+  
+  
+  
+
+  
+  <style>
+    
+      /* Add some style to the buttons */
+    .wxbutton {
+  background-color: #3498db;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  display: block;
+  font-family: sans-serif;
+  font-size: 14px;
+  margin: 0 auto;
+  outline: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  width: 80%;
+   /*  position: fixed;
+ bottom: 0;*/
+
+}
+
+.wxbutton:hover {
+  background-color: #2980b9;
+    /* position: fixed;
+  bottom: 0;*/
+    z-index: 3;
+
+}
+
+.wxbutton:active {
+  background-color: #2980b9;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  transform: translateY(2px);
+  /*bottom: 0;
+    z-index: 3;
+    display: flex;
+  justify-content: space-between;*/
+}
+    
+    #chatbot-questions {
+    position: fixed;
+    bottom: 0;
+    z-index: 3;
+    }    
+    
+
+
+  </style>
+  <div style="color: gray; font-size: 10px; text-align: center;">Touch the white button on the right on mobile to activate AR mode -> </div>
+
+  
+<div style="background-color: #3498db; width: 100%; height: 50px; text-align: center; color: white; font-size: 20px; line-height: 50px;">Ask Owlie Skywarn:</div>
+  
+  <div>
+  <span style="margin: 5px;"></span>
+</div>
+
+  <div>
+    
+    
+    
+          <!-- Add a button to trigger the forecast request -->
+<button class="wxbutton" onclick="getForecast()">Are there any weather hazards today?</button>
+  </div>
+  <div>
+  <span style="margin: 10px;"></span>
+</div>
+
+    <div>
+    <button class="wxbutton" onclick="showImage()">How should I get weather warnings?</button>
+  </div>
+  <div>
+  <span style="margin: 10px;"></span>
+</div>
+
+    <div>
+    <button id= "demoswitch" class="wxbutton" onclick="demoswitch()">Do you have any other weather safety tips?</button>
+  </div>
+
+  <div>
+  <span style="margin: 2px;"></span>
+</div>
+  
+    <div style="color: gray; font-size: 9px; text-align: center;"><a href="https://forms.gle/hmwppDge5aKetW7R8">Give Feedback of your experience here | </a><a href="https://www.weather.gov/owlie/owlieactivity">Learn more about Owlie Skywarn here</a></div>
+  
+  <div>
+  <span style="margin: 1px;"></span>
+</div>
+  
+      <div style="color: gray; font-size: 9px; text-align: center;">  <a href="https://twitter.com/nwsshreveport/status/1639629797318959104">Presented by Armani Cassel, NWS Meteorologist at the 2023 Starbase STEM Zone</a></div>
+
+  
+  
+  
+  
+<script>
+  
+  
+  
+  
+  
+  //Touch anywhere to exit
+  document.addEventListener("click", function() {
+  document.getElementById("forecast-textbox").innerHTML = "";
+});
+
+  
+  
+  
+  
+/*
+  
+  https://twitter.com/nwsshreveport/status/1639629797318959104
+  
+  https://ams.confex.com/ams/103ANNUAL/meetingapp.cgi/Paper/417916
+  
+  function loadImage() {
+  // Clear the content of the speech bubble
+  //document.getElementById("forecast-textbox").innerHTML = '';
+  
+  // Create an img element and set its src attribute to the URL of the image
+  var img = document.createElement('img');
+  img.src = "https://www.weather.gov/images/ctp/safety/WaysToReceive/getWarnings.png";
+  
+  // Append the img element to the speech bubble
+  //document.getElementById("forecast-textbox").appendChild(img);
+  document.getElementById("forecast-textbox").innerHTML = '<img src="https://www.weather.gov/images/ctp/safety/WaysToReceive/getWarnings.png">';
+    
+    
+}
+
+  
+  
+  function loadImage() {
+		var img = document.getElementById("forecast-textbox");
+		img.src = "https://cdn.glitch.global/5a2e8612-38b7-4198-81e4-331490f755b9/getWarnings.png?v=1673122272710";
+	}
+  
+  */
+  
+  function showImage() {
+  var imgUrl = "https://cdn.glitch.global/5a2e8612-38b7-4198-81e4-331490f755b9/getWarnings.png?v=1673122272710"; 
+  var imgElement = document.createElement("img");
+  imgElement.src = imgUrl;
+  imgElement.style.position = "absolute";
+  imgElement.style.top = "0";
+  //imgElement.style.left = "0";
+  imgElement.style.zIndex = "999";  
+  imgElement.style.maxWidth = "100%";
+  //imgElement.style.maxHeight = "100%";
+  imgElement.style.objectFit = "contain";
+    
+  document.body.appendChild(imgElement);
+  
+  imgElement.addEventListener("click", function() {
+    imgElement.style.display = "none";
+  });
+}
+
+  
+  
+  
+  
+  let hazard;
+  //console.log(hazard);
+  //let parsedText;
+  //console.log(parsedText);
+  
+  //let forecast;
+  //let location;
+  
+  //function getForecast2(){
+    //getForecast();
+  //}
+  
+  function getForecast() {
+    clearSpeechBubble();
+    // Get the user's location
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var lat = position.coords.latitude;
+      var lon = position.coords.longitude;
+
+      // Make a request to the website
+      fetch(`https://forecast.weather.gov/MapClick.php?lon=${lon}&lat=${lat}`)
+        .then(function(response) {
+          return response.text();
+        })
+        .then(function(html) {
+          // Parse the HTML to extract the forecast data
+          var forecast = parseForecast(html);
+          //console.log(forecast);
+          var location = hazlocation(html);
+          //var hazard = getHazard(lastThreeString);
+          var hazard = window.parsedText;
+          // Update the forecast element with the forecast data
+          //document.getElementById('forecast-textbox').innerHTML = forecast;
+          //var forecast2 = location.concat(forecast).join("\n");
+        //combineVariables(getVariable1(), getVariable2());
+
+        //var combined = combineVariables(location, forecast, location4);
+        
+        //var combined = combineVariables(location, forecast, hazard);
+        var combined = combineVariables(location, forecast);        
+        //Put the combined forecast and user location in the chatbox
+          document.getElementById('forecast-textbox').innerHTML = combined;
+        
+        });
+    });
+  }
+  
+  function parseForecast(html) {
+  // Use jQuery to parse the HTML
+  var $html = $(html);
+    
+
+  //Extract the raw forecast wording
+  //var raw_forecast = $html.find('#detailed-forecast').text();
+  //var raw_forecast2 = $html.find('#detailed-forecast').text();
+  //var raw_forecast2 = $html.find('#detailed-forecast .col-sm-10.forecast-text').text();   
+           //console.log(raw_forecast);
+    //console.log(raw_forecast2);
+    //<div class="row row-odd row-forecast"><div class="col-sm-2 forecast-label"><b>Today</b></div><div class="col-sm-10 forecast-text">Sunny, with a high near 67. Southeast wind 5 to 10 mph. </div></div>
+    
+    var combinedText1 = $html.find(".col-sm-2.forecast-label").slice(0, 1).map(function() {
+  return $(this).text();
+}).get();
+        console.log(combinedText1);
+    
+        var combinedText2 = $html.find(".col-sm-10.forecast-text").slice(0, 1).map(function() {
+  return $(this).text();
+}).get();
+
+  //var forecast = combinedText.join("\n");
+  var forecast = combinedText1.concat(combinedText2).join(": ");
+  //var combo2 = combinedText1.concat(combinedText2).join("\n");
+
+    //var list = matches.map(function(item) {
+  //return "- " + item;
+//}).join("\n");
+  
+  //console.log(matches[0]);
+  return forecast;
+  //return matches;
+}
+  
+  //This function loads the nearest part of the location and the 
+  
+  //define global WFO variable
+        var lastThreeString;
+  
+    function hazlocation(html) {
+        var $html = $(html);
+      //Extract the user location
+      var location1 = $html.find('#getfcst-head').map(function() {
+  return $(this).text();
+}).get();
+              console.log(location1);
+      
+      var location2 = $html.find('#getfcst-headOffice').map(function() {
+  return $(this).text();
+
+}).get();
+     
+              console.log(location2);  
+      
+//            var location3 = $html.find('#getfcst-head').map(function() {
+  //return $(this).html();
+
+//}).get();
+     
+ //             console.log(location3);  
+      
+                  var location4 = $html.find('#localWFO').map(function() {
+  return $(this).attr('title').toString();
+
+}).get();
+     
+              console.log(location4);  
+      
+                  var location5 = $html.find('#localWFO').map(function() {
+  return $(this).attr('href');
+
+}).get();
+     
+              console.log(location5);  
+      
+      
+      var a = document.getElementById('localWFO');
+//var title = a.getAttribute('title');
+console.log(a);
+
+      
+        //var location6 = $html.find(location4).text();
+          //        console.log(location6); 
+      
+      
+        //var lastThree = href.match(/[^/]{3}$/);
+  //console.log(lastThree);
+      
+      //.attr('href');
+      
+      
+//$(html).ready(function() {
+//  var html = $html.find('#getfcst-head').html();
+//  console.log(html);
+
+//  var link = location2.match(/https?:\/\/[^\s]+/);
+//  console.log(link);
+
+//});
+              
+
+                //console.log(link);
+
+      
+  //var link = $html.find('#getfcst-headOffice').attr('href');
+  //var location3 = link.substring(link.length - 3);      
+                    //console.log(link); 
+      
+
+  //var link = $html.find('#getfcst-head').attr('href');
+  //var text = link.substring(link.length - 3);
+  //console.log(text);
+              //console.log(location3);
+       /*
+      var location2 = $html.find('#getfcst-headOffice').text();
+             console.log(location2);
+     
+      $(html).ready(function() {
+  var text = $('#getfcst-headOffice').text();
+  console.log(text);
+});
+      
+  var content = $('#getfcst-headOffice').html();
+  var nodes = $.parseHTML(content);
+  var textLinks = $(nodes).map(function() {
+    if (this.nodeType === 3) {
+      return this.nodeValue;
+    } else if (this.nodeType === 1 && this.tagName === 'A') {
+      return this.href;
+    }
+  }).get();
+  
+  console.log(textLinks);
+      
+      */
+      
+      //var wfo = extractLastThree(location5);
+      //console.log(wfo);
+      //var location = location1.concat(location2).join("\n");
+      
+      
+      var lastThree = location5.toString().substring(location5.length - 3);
+      console.log(lastThree);
+      var lastThree3 = lastThree.match(/\w{3}$/);
+      var lastThreeString = lastThree3[0];
+            console.log(lastThreeString);
+      
+      
+
+      //wfo    getHazard(lastThreeString);
+      
+      getHazard(lastThreeString);
+      
+          //console.log(hazard_f);
+      
+  
+      
+      
+      
+      var location = location1 + ':  ' + location2 + location4;
+      //return location, lastThreeString;
+      //return location4;
+      return location;
+    }
+  
+function combineVariables(var1, var2) {
+  var combined = '\n' + var1 + '<br>' + '\n' + var2;
+    //var combined = '\n' + var1 + '<br>' + '\n' + var2 + '<br>' + var3;
+   // var combined = var1 + ':' + var3 + '\n' + var2;
+  return combined;
+}
+  
+  
+ //function getHazard() {
+  // Get the user's location
+  //var wfo = lastThreeString;
+//console.log(wfo);
+
+//}
+
+  //var parsedText;
+  
+   function getHazard(wfo) {
+
+     console.log(wfo);
+             // Make a request to the HWO website
+  //fetch(`https://forecast.weather.gov/product.php?site=${wfo}&issuedby=${wfo}&product=HWO&format=CI&version=1&glossary=1`)
+  //  .then(function(response) {
+   
+     
+       fetch(`https://forecast.weather.gov/product.php?site=${wfo}&issuedby=${wfo}&product=HWO&format=CI&version=1&glossary=1`)
+  .then(function(response) {
+    return response.text();
+  })
+  .then(function(text) {
+
+         
+         //var text_i = $("#elementId").html();
+         var text_f = text.replace(/<[^>]*>/g, ""); // Remove all HTML tags
+
+         
+             // Use the text variable to search for the DAY ONE text using a regular expression
+    //var dayOneRegex = `(?<=DAY ONE).*(?=DAY TWO)`;
+        //var dayOneRegex = `^[\s\S]*?DAY ONE\b`;
+    //const dayOneMatch = text_f.match(dayOneRegex);
+         
+         
+         //console.log(text);
+                  console.log(text_f);
+         //console.log(dayOneMatch);
+             // Use the text variable to search for the DAY ONE text using a regular expression
+    //var dayOneRegex = /\.DAY ONE\.{2}(.+?)\.DAY TWO/;
+         
+         //let parsedText = getDay1(text_f);
+         //getDay1(text_f);
+         window.parsedText = getDay1(text_f);
+         
+         //window.parsedText2 = parsedText;
+         //console.log(hazard);
+         console.log(parsedText);
+
+         
+
+function getDay1(hwoText) {     
+  // Use a regular expression to match the Day One forecast
+  //var dayOneRegex = /\.DAY ONE\.\.\.Today and tonight\.\s*([\s\S]*?)\.DAYS TWO/;
+  var dayOneRegex = /\.DAY ONE\.\.\.\s*([\s\S]*?)\.DAYS TWO/;
+  var dayOneMatch = hwoText.match(dayOneRegex);
+  // If the regex found a match, return the forecast text
+  if (dayOneMatch) {
+    return dayOneMatch[1];
+  }
+  // If the regex didn't find a match, return an empty string
+  return '';
+          //parsedText = getDay1(text_f);
+  
+  //return parsedText;
+  
+}
+
+         
+         
+    //if (dayOneMatch) {
+      // The first group in the regular expression match will contain the DAY ONE text
+      //var dayOneText = dayOneMatch[1];
+      // Do something with the DAY ONE text, such as displaying it on the webpage
+    //}
+     //    return dayOneText;
+  });
+     
+     
+     //return parsedText;
+     
+    //combined = combineVariables(location, forecast, parsedText);
+        //Put the combined forecast and user location in the chatbox
+    //document.getElementById('forecast-textbox').innerHTML = combined;
+     
+   }
+  
+  function clearSpeechBubble() {
+  // Get the speech bubble element
+  var speechBubble = document.querySelector('.speech-bubble');
+
+  // Clear the contents of the speech bubble
+  speechBubble.innerHTML = '';
+}
+
+
+
+
+  
+</script>
+  
+
+  
+  
+  
+</div>
+</body>
+</html>
